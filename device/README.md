@@ -6,8 +6,8 @@
 
 ```json
 {
-    "value": value,
-    "time": time
+  "value": "value",
+  "time": "time"
 }
 ```
 
@@ -15,8 +15,8 @@ For example:
 
 ```json
 {
-    "value": 455.1,
-    "time": 1718037202913
+  "value": 455.1,
+  "time": 1718037202913
 }
 ```
 
@@ -24,32 +24,31 @@ For example:
 
 ```json
 {
-    "measurement": {
-        "rate": rate value,
-        "angle": angle value,
-        "time": time
-    }
+  "measurement": {
+    "rate": "rate value",
+    "angle": "angle value",
+    "time": "time"
+  }
 }
 ```
 
 For example:
 
 ```json
-
 {
-    "time": 1718037056800,
-    "pitch": {
-        "rate": 0.29,
-        "angle": 0.01,
-    },
-    "roll": {
-        "rate": -0.29,
-        "angle": -0.01,
-    },
-    "yaw": {
-        "rate": 0.09,
-        "angle": 0.01,
-    },
+  "time": 1718037056800,
+  "pitch": {
+    "rate": 0.29,
+    "angle": 0.01
+  },
+  "roll": {
+    "rate": -0.29,
+    "angle": -0.01
+  },
+  "yaw": {
+    "rate": 0.09,
+    "angle": 0.01
+  }
 }
 ```
 
