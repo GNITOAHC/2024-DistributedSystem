@@ -11,6 +11,7 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "johnny-five": "^2.1.0",
+    "mqtt": "^5.7.0",
     "nodebots-interchange": "^2.1.3"
   }
 }
