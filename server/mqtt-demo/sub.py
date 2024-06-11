@@ -5,22 +5,34 @@ import json
 
 HOST = "127.0.0.1"
 PORT = 1883
-TOPIC = "TEST"
+TOPIC1 = "HCSR04"
+TOPIC2 = "MPU6050"
 
-# 當地端程式連線伺服器得到回應時，要做的動作
+# 當連線到伺服器時，要做的動作
 def on_connect(client, userdata, flags, rc):
-    # print("Connected with result code "+str(rc))
-    print(f"Mqtt已連線, Host: {HOST}:{PORT}, TOPIC: {TOPIC}")
-    # 如果我們失去連線或重新連線時 # 地端程式將會重新訂閱 TOPIC
-    client.subscribe(TOPIC)
+    print(f"HCSR04已連線, Host: {HOST}:{PORT}")
+    # 當失去連線，或重新連線，重新訂閱 TOPIC
+    client.subscribe(TOPIC1)
+    client.subscribe(TOPIC2)
+    
+def topic1Func(msg):
+    # HCSR04
+    print(f"action of HCSR04, msg = {msg}")
 
-# 當接收到從伺服器發送的訊息時要進行的動作
+def topic2Func(msg):
+    # MPU6050
+    print(f"action of MPU6050, msg = {msg}")
+
+# 當接收到pubisher訊息時，要做的動作
 def on_message(client, userdata, _msg):
     msg = json.loads(_msg.payload)
-    # print(f"received: msg = {messages}")
-
-if __name__ == '__main__':
     
+    if _msg.topic == TOPIC1:
+        topic1Func(msg)
+    if _msg.topic == TOPIC2:
+        topic2Func(msg)
+        
+if __name__ == '__main__':
     client = mqtt.Client() # 連線設定 # 初始化地端程式
     client.on_connect = on_connect # 設定連線的動作
     client.on_message = on_message # 設定接收訊息的動作
