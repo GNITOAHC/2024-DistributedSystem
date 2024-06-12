@@ -1,12 +1,16 @@
 # subscriber.py
-
+import os
 import paho.mqtt.client as mqtt
 import json
+import subprocess
+
 
 HOST = "127.0.0.1"
 PORT = 1883
 TOPIC1 = "HCSR04"
 TOPIC2 = "MPU6050"
+CUR_DIR = os.path.dirname(os.path.abspath(__file__))
+API_PATH = os.path.join(CUR_DIR, '../write_data.py')
 
 # 當連線到伺服器時，要做的動作
 def on_connect(client, userdata, flags, rc):
@@ -16,12 +20,27 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe(TOPIC2)
     
 def topic1Func(msg):
+    input_str = json.dumps(msg)
+
+    res = subprocess.run(['python3', API_PATH], text=True, input=input_str)
+    if res.returncode != 0:
+        print({'Error': 'Insert failed', 'Details':res.stderr} )
+        return
+    print(res.stdout)
+
     # HCSR04
-    print(f"action of HCSR04, msg = {msg}")
+    print(f"\naction of HCSR04, msg = {msg}")
 
 def topic2Func(msg):
+    input_str = json.dumps(msg)
+    res    = subprocess.run(['python3', API_PATH], text=True, input=input_str)
+    if res.returncode != 0:
+        print({'Error': 'Insert failed', 'Details':res.stderr})
+        return
+    print(res.stdout)
+
     # MPU6050
-    print(f"action of MPU6050, msg = {msg}")
+    print(f"\naction of MPU6050, msg = {msg}")
 
 # 當接收到pubisher訊息時，要做的動作
 def on_message(client, userdata, _msg):
