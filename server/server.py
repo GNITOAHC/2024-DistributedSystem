@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+from paho.mqtt.enums import CallbackAPIVersion
 from dotenv import load_dotenv
 from database import Device, new_session
 from database.query import get_time_zone, write_data
@@ -10,7 +11,7 @@ HOST = "127.0.0.1"
 PORT = 1883
 
 
-def on_connect(client, _userdata, _flags, _rc):
+def on_connect(client, _userdata, _flags, _rc, _):
     print("on_connect")
     # print(Device.HCSR04.value, Device.MPU6050.value)
     client.subscribe(Device.HCSR04.value)
@@ -22,18 +23,18 @@ def on_message(client, userdata, msg):
     match msg.topic:
         case Device.MPU6050.value:
             parsed_data = parse_mpu6050(msg)
-            write_data(userdata, parsed_data) # userdata was set to iotdb_session
+            write_data(userdata, parsed_data)  # userdata was set to iotdb_session
             # print(parsed_data)
             pass
         case Device.HCSR04.value:
             parsed_data = parse_hcsr04(msg)
-            write_data(userdata, parsed_data) # userdata was set to iotdb_session
+            write_data(userdata, parsed_data)  # userdata was set to iotdb_session
             # print(parsed_data)
             pass
 
 
 def main():
-    client = mqtt.Client()  # 連線設定 # 初始化地端程式
+    client = mqtt.Client(CallbackAPIVersion.VERSION2)  # 連線設定 # 初始化地端程式
 
     client.on_connect = on_connect  # 設定連線的動作
     client.on_message = on_message  # 設定接收訊息的動作
