@@ -1,5 +1,4 @@
 from iotdb.Session import Session
-from iotdb.utils.IoTDBConstants import TSDataType, TSEncoding, Compressor
 
 
 class ReadDataType:
@@ -10,26 +9,37 @@ class ReadDataType:
 
 
 def read_data(session: Session, data: ReadDataType):
-    
-    result = session.execute_query_statement(
-        f"select * from root.{data.device} WHERE datatime >= {data.start_time} AND time <= {data.end_time}"
-        )
+    q_string = f"select * from root.{data.device}* where time >= {data.start_time} and time <= {data.end_time}"
+    result = session.execute_query_statement(q_string)
 
     df = result.todf()
     print(df)
 
-    data_list = []
-    for row in df:
-        time, pitch_rate, pitch_angle, roll_rate, roll_angle, yaw_rate, yaw_angle = row
-        data_dict = {
-            "time": time,
-            "pitch": {"rate": pitch_rate, "angle": pitch_angle},
-            "roll": {"rate": roll_rate, "angle": roll_angle},
-            "yaw": {"rate": yaw_rate, "angle": yaw_angle}
-        }
-        data_list.append(data_dict)
+    # for i in range(len(df)):
+    #     print(df.loc[i, "Time"], df.loc[i, "root.MPU6050.pitch_rate"])
 
-    result_dict = {"data": data_list}
-    print(result_dict)
-    
-    pass
+    return
+
+
+from iotdb.Session import Session
+
+SESSION_IP = "127.0.0.1"
+SESSION_PORT = "6667"
+SESSION_USERNAME = "root"
+SESSION_PASSWORD = "root"
+
+
+def new_session() -> Session:
+    session = Session(SESSION_IP, SESSION_PORT, SESSION_USERNAME, SESSION_PASSWORD)
+    session.open(False)
+    return session
+
+
+def main():
+    session = new_session()
+    query = ReadDataType(1718384500469, 1718386140144, "MPU6050")
+    read_data(session, query)
+
+
+if __name__ == "__main__":
+    main()
