@@ -12,3 +12,7 @@
     pip install apache-iotdb paho-mqtt python-dotenv
     python server.py
     ```
+
+## device name   
+- HCSR04: 超音波 cm 
+- MPU6050: 陀螺儀 yaw, roll, pitch

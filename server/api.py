@@ -6,6 +6,9 @@ app = FastAPI()
 
 session = new_session()
 
+# @app.get("/HCSR04")
+
+
 
 @app.get("/")
 def root_test():
