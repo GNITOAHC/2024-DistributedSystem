@@ -28,7 +28,7 @@
       .forEach((data, idx) => {
         const onerow = document.createElement("tr");
         onerow.insertAdjacentHTML("beforeend", `<th scope="row">${idx}</th>`);
-        onerow.insertAdjacentHTML("beforeend", `<td>${data.Time}</td>`);
+        onerow.insertAdjacentHTML("beforeend", `<td>${new Date(data.Time)}</td>`);
         onerow.insertAdjacentHTML(
           "beforeend",
           `<td>${data["root.HCSR04.value"]}</td>`,
