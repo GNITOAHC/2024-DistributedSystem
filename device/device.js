@@ -35,7 +35,7 @@ board.on('ready', () => {
   // MPU-6050
   const mpu6050 = new IMU({
     controller: 'MPU6050',
-    freq: 1000, // ms per data
+    freq: 333, // ms per data
   })
 
   hcsr04.on('data', () => {
