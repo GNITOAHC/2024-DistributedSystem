@@ -1,15 +1,33 @@
 {{ define "body" }}
 <div>
-  <h1>Select a device</h1>
-  <div class="">
-    <a class="btn btn-primary" href="/hcsr04">HCSR04</a>
-    <a class="btn btn-primary" href="/mpu6050">MPU6050</a>
+  <div
+    style="
+      padding-left: 6rem;
+      padding-right: 6rem;
+      padding-top: 17%;
+      font-family:
+        Playwrite FR Moderne,
+        cursive;
+      font-optical-sizing: auto;
+    "
+  >
+    <h1
+      class="mb-4 d-flex justify-content-center"
+      id="entry-title"
+      style="font-weight: 400; font-style: normal"
+    >
+      Select a device
+    </h1>
+    <div class="text-center d-flex justify-content-evenly">
+      <a class="btn btn-primary p-4" href="/hcsr04">HCSR04</a>
+      <a class="btn btn-primary p-4" href="/mpu6050">MPU6050</a>
+    </div>
   </div>
+  {{ end }}
+
+  <!-- -->
+
+  {{ define "scripts" }}
+  <script></script>
+  {{ end }}
 </div>
-{{ end }}
-
-<!-- -->
-
-{{ define "scripts" }}
-<script></script>
-{{ end }}
