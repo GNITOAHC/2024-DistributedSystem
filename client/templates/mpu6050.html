@@ -1,3 +1,89 @@
 {{ define "body" }}
 <div>MPU6050</div>
+<form id="mpu6050-form" enctype="multipart/form-data">
+  <input type="datetime-local" name="start" />
+  <input type="datetime-local" name="end" />
+  <button type="submit">Confirm</button>
+</form>
+{{ template "data" }} {{ template "mpu6050-script" }}
+<!-- -->
+{{ end }}
+
+<!-- -->
+
+{{ define "mpu6050-script" }}
+<script>
+  const mpu6050Form = document.getElementById("mpu6050-form");
+  mpu6050Form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const formData = new FormData(mpu6050Form);
+    const start = Date.parse(formData.get("start"));
+    const end = Date.parse(formData.get("end"));
+    console.log(start, end);
+    const response = await fetch(`/mpu6050?start=${start}&end=${end}`);
+    const data = await response.json();
+    const dataBody = document.getElementById("mpu6050-data-body");
+    console.log(data);
+    dataBody.innerHTML = "";
+    Object.values(data)
+      .reverse()
+      .forEach((data, idx) => {
+        const onerow = document.createElement("tr");
+        onerow.insertAdjacentHTML("beforeend", `<th scope="row">${idx}</th>`);
+        onerow.insertAdjacentHTML("beforeend", `<td>${data.Time}</td>`);
+        onerow.insertAdjacentHTML(
+          "beforeend",
+          `<td>${data["root.MPU6050.pitch_rate"]}</td>`,
+        );
+        onerow.insertAdjacentHTML(
+          "beforeend",
+          `<td>${data["root.MPU6050.pitch_angle"]}</td>`,
+        );
+        onerow.insertAdjacentHTML(
+          "beforeend",
+          `<td>${data["root.MPU6050.roll_rate"]}</td>`,
+        );
+        onerow.insertAdjacentHTML(
+          "beforeend",
+          `<td>${data["root.MPU6050.roll_angle"]}</td>`,
+        );
+        onerow.insertAdjacentHTML(
+          "beforeend",
+          `<td>${data["root.MPU6050.yaw_rate"]}</td>`,
+        );
+        onerow.insertAdjacentHTML(
+          "beforeend",
+          `<td>${data["root.MPU6050.yaw_angle"]}</td>`,
+        );
+        dataBody.append(onerow);
+      });
+  });
+</script>
+{{ end }}
+
+<!-- -->
+
+{{ define "data" }}
+<h1>MPU6050 Data</h1>
+
+<table class="table" id="mpu6050-data">
+  <thead class="thead-dark">
+    <tr>
+      <th rowspan="2">No.</th>
+      <th rowspan="2">Time</th>
+      <th colspan="2">Pitch</th>
+      <th colspan="2">Roll</th>
+      <th colspan="2">Yaw</th>
+    </tr>
+    <tr>
+      <th>Rate</th>
+      <th>Angle</th>
+      <th>Rate</th>
+      <th>Angle</th>
+      <th>Rate</th>
+      <th>Angle</th>
+    </tr>
+  </thead>
+  <tbody id="mpu6050-data-body"></tbody>
+</table>
 {{ end }}

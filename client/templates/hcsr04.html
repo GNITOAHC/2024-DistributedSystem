@@ -4,13 +4,13 @@
   <input type="datetime-local" name="start" />
   <input type="datetime-local" name="end" />
   <button type="submit">Confirm</button>
-  <div id="hcsr04-chart"></div>
 </form>
-{{ template "hcsr04-script" }}
+{{ template "data" }} {{ template "hcsr04-script" }}
 <!-- -->
 {{ end }}
 
 <!-- -->
+
 {{ define "hcsr04-script" }}
 <script>
   const hcsr04Form = document.getElementById("hcsr04-form");
@@ -22,7 +22,38 @@
     console.log(start, end);
     const response = await fetch(`/hcsr04?start=${start}&end=${end}`);
     const data = await response.json();
-    console.log("response: ", data);
+    const dataBody = document.getElementById("hcsr04-data-body");
+    dataBody.innerHTML = "";
+    Object.values(data)
+      .reverse()
+      .forEach((data, idx) => {
+        const onerow = document.createElement("tr");
+        onerow.insertAdjacentHTML("beforeend", `<th scope="row">${idx}</th>`);
+        onerow.insertAdjacentHTML("beforeend", `<td>${data.Time}</td>`);
+        onerow.insertAdjacentHTML(
+          "beforeend",
+          `<td>${data["root.HCSR04.value"]}</td>`,
+        );
+        dataBody.append(onerow);
+      });
   });
 </script>
+{{ end }}
+
+<!-- -->
+
+{{ define "data" }}
+<h1>HCSR04 Data</h1>
+
+<table class="table" id="hcsr04-data">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col">Time</th>
+      <th scope="col">Value</th>
+    </tr>
+  </thead>
+  <tbody id="hcsr04-data-body"></tbody>
+</table>
+
 {{ end }}
