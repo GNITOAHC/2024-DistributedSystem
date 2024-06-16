@@ -19,11 +19,9 @@
     const formData = new FormData(mpu6050Form);
     const start = Date.parse(formData.get("start"));
     const end = Date.parse(formData.get("end"));
-    console.log(start, end);
     const response = await fetch(`/mpu6050?start=${start}&end=${end}`);
     const data = await response.json();
     const dataBody = document.getElementById("mpu6050-data-body");
-    console.log(data);
     dataBody.innerHTML = "";
     Object.values(data)
       .reverse()
