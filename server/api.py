@@ -26,10 +26,18 @@ def root_test():
 
 @app.get("/MPU6050")
 def get_items(start:int, end:int):
-    
+    ''' data syntax
+        "0": {
+            "Time": 1718442994480.0,
+            "root.MPU6050.pitch_rate": -0.03999999910593033,
+            "root.MPU6050.yaw_angle": -2.5199999809265137,
+            "root.MPU6050.roll_angle": -0.019999999552965164,
+            "root.MPU6050.pitch_angle": 0.7300000190734863,
+            "root.MPU6050.roll_rate": 0.05000000074505806,
+            "root.MPU6050.yaw_rate": -0.07000000029802322
+        },
+    '''
     if(start and end):
-        # print(int(start))
-        # print(int(end))
         query = ReadDataType(int(start), int(end), "MPU6050")
         rd = read_data(query).transpose().to_dict()
         
@@ -39,9 +47,13 @@ def get_items(start:int, end:int):
 
 @app.get("/HCSR04")
 def get_items(start, end):
+    ''' data syntax
+        "0": {
+            "Time": 1718442994141.0,
+            "root.HCSR04.value": 118.9000015258789
+        },
+    '''
     if(start and end):
-        # print(int(start))
-        # print(int(end))
         query = ReadDataType(int(start), int(end), "HCSR04")
         rd = read_data(query).transpose().to_dict()
         
