@@ -37,7 +37,7 @@ def new_session() -> Session:
 
 def main():
     session = new_session()
-    query = ReadDataType(1718384500469, 1718386140144, "MPU6050")
+    query = ReadDataType(1718442994141, 1718457853140, "MPU6050")
     read_data(session, query)
 
 
